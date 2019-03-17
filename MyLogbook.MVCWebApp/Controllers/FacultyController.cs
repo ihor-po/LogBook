@@ -38,6 +38,8 @@ namespace MyLogbook.MVCWebApp.Controllers
                 return NotFound();
             }
 
+            ViewBag.GroupCount =  item.Groups.Count();
+
             return View(item);
         }
 

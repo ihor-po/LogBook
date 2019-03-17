@@ -12,6 +12,7 @@ namespace MyLogbook.MVCWebApp.Controllers
     {
         public IActionResult Index()
         {
+            ViewBag.Title = "Simple Logbook";
             return View();
         }
 

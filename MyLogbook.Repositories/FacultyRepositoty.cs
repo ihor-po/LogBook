@@ -2,7 +2,7 @@
 using MyLogbook.Abstractions;
 using MyLogbook.AppContext;
 using MyLogbook.Entities;
-
+using System.Linq;
 
 namespace MyLogbook.Repositories
 {

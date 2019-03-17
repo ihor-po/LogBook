@@ -10,9 +10,10 @@ namespace MyLogbook.Entities
     [Table("faculties")]
     public class Faculty:DbEntity
     {
-        [Column("name")]
+        [Column("title")]
         [StringLength(64)]
-        public string Name { get; set; }
+        public string Title { get; set; }
+       
         public virtual List<Group> Groups { get; set; }
     }
 }

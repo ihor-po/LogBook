@@ -38,9 +38,7 @@ namespace MyLogbook.Repositories
 
         async public Task<bool> ChangeItemAsync(T item)
         {
-            T changed = await GetItemAsync(item.Id);
-            if (changed == null) return false;
-            changed = item;
+            _context.Set<T>().Update(item);
             return await SaveChangesAsync() > 0;
 
         }
