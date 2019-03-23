@@ -13,6 +13,9 @@ namespace MyLogbook.AppContext
         public DbSet<Student> Students { get; set; }
         public DbSet<Professor> Professors { get; set; }
         public DbSet<ProfessorGroupLink> ProfessorGroupLinks { get; set; }
+        public DbSet<Subject> Subjects { get; set; }
+        public DbSet<ProfessorSubjectLink> ProfessorSubjectLinks { get; set; }
+        public DbSet<GroupSubjectLink> GroupSubjectLinks { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             :base (options)
@@ -49,6 +52,15 @@ namespace MyLogbook.AppContext
             Guid student_six = Guid.NewGuid();
             Guid student_sept = Guid.NewGuid();
             Guid student_huit = Guid.NewGuid();
+
+            Guid subject_une = Guid.NewGuid();
+            Guid subject_deux = Guid.NewGuid();
+            Guid subject_trois = Guid.NewGuid();
+            Guid subject_quatre = Guid.NewGuid();
+            Guid subject_cinq = Guid.NewGuid();
+            Guid subject_six = Guid.NewGuid();
+            Guid subject_sept = Guid.NewGuid();
+            Guid subject_huit = Guid.NewGuid();
 
             builder.Entity<Faculty>()
                 .HasMany(f => f.Groups)
@@ -94,10 +106,26 @@ namespace MyLogbook.AppContext
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Student>()
-                .HasOne(p => p.Group)
+                .HasOne(s => s.Group)
                 .WithMany(item => item.Students)
                 .HasForeignKey(g => g.GroupId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Subject>();
+
+            builder.Entity<ProfessorSubjectLink>()
+               .HasKey(psl => new { psl.ProfessorId, psl.SubjectId });
+            builder.Entity<ProfessorSubjectLink>()
+                .HasOne(psl => psl.Professor)
+                .WithMany(psl => psl.ProfessorSubjectLink)
+                .HasForeignKey(psl => psl.ProfessorId);
+
+            builder.Entity<GroupSubjectLink>()
+               .HasKey(gsl => new { gsl.GroupId, gsl.SubjectId });
+            builder.Entity<GroupSubjectLink>()
+                .HasOne(gsl => gsl.Group)
+                .WithMany(gsl => gsl.GroupSubjectLink)
+                .HasForeignKey(gsl => gsl.GroupId);
 
             /*
              * First data for faculties 
@@ -161,6 +189,48 @@ namespace MyLogbook.AppContext
                 new Student { Id = student_six, FirstName = "Sidorova", LastName = "Sidora", MiddleName = "Sidorovna", GroupId = group_une },
                 new Student { Id = student_sept, FirstName = "Malina", LastName = "Malin", MiddleName = "Milanovich", GroupId = group_une },
                 new Student { Id = student_huit, FirstName = "Malina", LastName = "Mila", MiddleName = "Milanovna", GroupId = group_deux }
+                );
+
+            /*
+            * First data for students 
+            */
+            builder.Entity<Subject>().HasData(
+                new Subject { Id = subject_une, Title = "C" },
+                new Subject { Id = subject_deux, Title = "C++" },
+                new Subject { Id = subject_trois, Title = "C#" },
+                new Subject { Id = subject_quatre, Title = "ADO.NET" },
+                new Subject { Id = subject_cinq, Title = "ASP.NET Core" },
+                new Subject { Id = subject_six, Title = "Windows 7" },
+                new Subject { Id = subject_sept, Title = "Network programming" },
+                new Subject { Id = subject_huit, Title = "System programming" }
+                );
+
+            /*
+            * First data for ProfessorSubjectLink 
+            */
+            builder.Entity<ProfessorSubjectLink>().HasData(
+                new ProfessorSubjectLink { ProfessorId = professor_une, SubjectId = subject_une },
+                new ProfessorSubjectLink { ProfessorId = professor_deux, SubjectId = subject_deux },
+                new ProfessorSubjectLink { ProfessorId = professor_trois, SubjectId = subject_deux },
+                new ProfessorSubjectLink { ProfessorId = professor_quatre, SubjectId = subject_cinq },
+                new ProfessorSubjectLink { ProfessorId = professor_une, SubjectId = subject_cinq },
+                new ProfessorSubjectLink { ProfessorId = professor_deux, SubjectId = subject_six },
+                new ProfessorSubjectLink { ProfessorId = professor_trois, SubjectId = subject_six },
+                new ProfessorSubjectLink { ProfessorId = professor_quatre, SubjectId = subject_huit }
+                );
+
+            /*
+            * First data for ProfessorSubjectLink 
+            */
+            builder.Entity<GroupSubjectLink>().HasData(
+                new GroupSubjectLink { GroupId = group_une, SubjectId = subject_une },
+                new GroupSubjectLink { GroupId = group_une, SubjectId = subject_deux },
+                new GroupSubjectLink { GroupId = group_deux, SubjectId = subject_deux },
+                new GroupSubjectLink { GroupId = group_une, SubjectId = subject_cinq },
+                new GroupSubjectLink { GroupId = group_deux, SubjectId = subject_cinq },
+                new GroupSubjectLink { GroupId = group_une, SubjectId = subject_six },
+                new GroupSubjectLink { GroupId = group_deux, SubjectId = subject_six },
+                new GroupSubjectLink { GroupId = group_deux, SubjectId = subject_huit }
                 );
         }
     }

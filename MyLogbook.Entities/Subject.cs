@@ -7,22 +7,15 @@ using System.Text;
 
 namespace MyLogbook.Entities
 {
-    [Table("groups")]
-    public class Group : DbEntity
+    [Table("subjects")]
+    public class Subject : DbEntity
     {
         [Column("title")]
-        [StringLength(64)]
+        [StringLength(maximumLength: 32, ErrorMessage = "Minimun 2 chars, max 32 chars", MinimumLength = 2)]
         [Required(ErrorMessage = "Title - cannot be  empty")]
         public string Title { get; set; }
-        [Required(ErrorMessage = "Fuculty - must be selected")]
-        public Guid FacultyId { get; set; }
 
-        [ForeignKey("FacultyId")]
-        public virtual Faculty Faculty { get; set; }
-
-        public virtual List<Student> Students { get; set; }
-
-        public virtual ICollection<ProfessorGroupLink> ProfessorGroupLinks { get; set; }
+        public virtual ICollection<ProfessorSubjectLink> ProfessorSubjectLink { get; set; }
         public virtual ICollection<GroupSubjectLink> GroupSubjectLink { get; set; }
     }
 }

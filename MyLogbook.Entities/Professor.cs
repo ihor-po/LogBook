@@ -32,5 +32,7 @@ namespace MyLogbook.Entities
         public virtual Department Department { get; set; }
 
         public virtual ICollection<ProfessorGroupLink> ProfessorGroupLinks { get; set; }
+
+        public virtual ICollection<ProfessorSubjectLink> ProfessorSubjectLink { get; set; }
     }
 }
