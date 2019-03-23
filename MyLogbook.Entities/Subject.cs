@@ -15,7 +15,8 @@ namespace MyLogbook.Entities
         [Required(ErrorMessage = "Title - cannot be  empty")]
         public string Title { get; set; }
 
-        public virtual ICollection<ProfessorSubjectLink> ProfessorSubjectLink { get; set; }
-        public virtual ICollection<GroupSubjectLink> GroupSubjectLink { get; set; }
+        public virtual ICollection<ProfessorSubjectLink> ProfessorSubjectLinks { get; set; }
+        public virtual ICollection<GroupSubjectLink> GroupSubjectLinks { get; set; }
+        public virtual ICollection<Mark> Marks { get; set; }
     }
 }

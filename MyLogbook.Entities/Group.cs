@@ -23,6 +23,6 @@ namespace MyLogbook.Entities
         public virtual List<Student> Students { get; set; }
 
         public virtual ICollection<ProfessorGroupLink> ProfessorGroupLinks { get; set; }
-        public virtual ICollection<GroupSubjectLink> GroupSubjectLink { get; set; }
+        public virtual ICollection<GroupSubjectLink> GroupSubjectLinks { get; set; }
     }
 }

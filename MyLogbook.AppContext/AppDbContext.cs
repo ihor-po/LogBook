@@ -16,6 +16,7 @@ namespace MyLogbook.AppContext
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<ProfessorSubjectLink> ProfessorSubjectLinks { get; set; }
         public DbSet<GroupSubjectLink> GroupSubjectLinks { get; set; }
+        public DbSet<Mark> Marks { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             :base (options)
@@ -117,15 +118,34 @@ namespace MyLogbook.AppContext
                .HasKey(psl => new { psl.ProfessorId, psl.SubjectId });
             builder.Entity<ProfessorSubjectLink>()
                 .HasOne(psl => psl.Professor)
-                .WithMany(psl => psl.ProfessorSubjectLink)
+                .WithMany(psl => psl.ProfessorSubjectLinks)
                 .HasForeignKey(psl => psl.ProfessorId);
+            builder.Entity<ProfessorSubjectLink>()
+                .HasOne(psl => psl.Subject)
+                .WithMany(psl => psl.ProfessorSubjectLinks)
+                .HasForeignKey(psl => psl.SubjectId);
 
             builder.Entity<GroupSubjectLink>()
                .HasKey(gsl => new { gsl.GroupId, gsl.SubjectId });
             builder.Entity<GroupSubjectLink>()
                 .HasOne(gsl => gsl.Group)
-                .WithMany(gsl => gsl.GroupSubjectLink)
+                .WithMany(gsl => gsl.GroupSubjectLinks)
                 .HasForeignKey(gsl => gsl.GroupId);
+            builder.Entity<GroupSubjectLink>()
+                .HasOne(gsl => gsl.Subject)
+                .WithMany(gsl => gsl.GroupSubjectLinks)
+                .HasForeignKey(gsl => gsl.SubjectId);
+
+            builder.Entity<Mark>()
+                .HasKey(m => new { m.StudentId, m.SubjectId });
+            builder.Entity<Mark>()
+                .HasOne(m => m.Student)
+                .WithMany(m => m.Marks)
+                .HasForeignKey(m => m.StudentId);
+            builder.Entity<Mark>()
+                .HasOne(m => m.Subject)
+                .WithMany(m => m.Marks)
+                .HasForeignKey(m => m.SubjectId);
 
             /*
              * First data for faculties 

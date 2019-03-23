@@ -30,5 +30,7 @@ namespace MyLogbook.Entities
 
         [ForeignKey("GroupId")]
         public virtual Group Group { get; set; }
+
+        public virtual ICollection<Mark> Marks { get; set; }
     }
 }
