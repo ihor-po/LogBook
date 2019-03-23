@@ -41,6 +41,15 @@ namespace MyLogbook.AppContext
             Guid professor_trois = Guid.NewGuid();
             Guid professor_quatre = Guid.NewGuid();
 
+            Guid student_une = Guid.NewGuid();
+            Guid student_deux = Guid.NewGuid();
+            Guid student_trois = Guid.NewGuid();
+            Guid student_quatre = Guid.NewGuid();
+            Guid student_cinq = Guid.NewGuid();
+            Guid student_six = Guid.NewGuid();
+            Guid student_sept = Guid.NewGuid();
+            Guid student_huit = Guid.NewGuid();
+
             builder.Entity<Faculty>()
                 .HasMany(f => f.Groups)
                 .WithOne()
@@ -53,7 +62,9 @@ namespace MyLogbook.AppContext
             builder.Entity<Group>()
                 .HasOne(g => g.Faculty)
                 .WithMany(item => item.Groups)
-                .HasForeignKey(g => g.FacultyId);
+                .HasForeignKey(g => g.FacultyId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             builder.Entity<Department>()
                 .HasOne(g => g.Faculty)
                 .WithMany(item => item.Departments)
@@ -66,7 +77,8 @@ namespace MyLogbook.AppContext
             builder.Entity<Professor>()
                 .HasOne(p => p.Department)
                 .WithMany(item => item.Professors)
-                .HasForeignKey(g => g.DepartmentId);
+                .HasForeignKey(g => g.DepartmentId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<ProfessorGroupLink>()
                 .HasKey(pgl => new { pgl.GroupId, pgl.ProfessorId });
@@ -80,6 +92,12 @@ namespace MyLogbook.AppContext
                 .WithMany(pgl => pgl.ProfessorGroupLinks)
                 .HasForeignKey(pgl => pgl.ProfessorId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Student>()
+                .HasOne(p => p.Group)
+                .WithMany(item => item.Students)
+                .HasForeignKey(g => g.GroupId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             /*
              * First data for faculties 
@@ -119,6 +137,30 @@ namespace MyLogbook.AppContext
                 new Professor { Id = professor_deux, FirstName = "Josef", LastName = "Millar", MiddleName = "Nguyen", DepartmentId = department_une },
                 new Professor { Id = professor_trois, FirstName = "Elleonora", LastName = "Bo", MiddleName = "Olga", DepartmentId = department_deux },
                 new Professor { Id = professor_quatre, FirstName = "Philip", LastName = "Chan", MiddleName = "Djordje", DepartmentId = department_trois }
+                );
+
+            /*
+            * First data for ProfessorGroupLink 
+            */
+            builder.Entity<ProfessorGroupLink>().HasData(
+                new ProfessorGroupLink { GroupId = group_une, ProfessorId = professor_une },
+                new ProfessorGroupLink { GroupId = group_une, ProfessorId = professor_deux },
+                new ProfessorGroupLink { GroupId = group_deux, ProfessorId = professor_trois },
+                new ProfessorGroupLink { GroupId = group_deux, ProfessorId = professor_quatre }
+                );
+
+            /*
+            * First data for students 
+             */
+            builder.Entity<Student>().HasData(
+                new Student { Id = student_une, FirstName = "Ivanov", LastName = "Ivan", MiddleName = "Ivanovich", GroupId = group_une },
+                new Student { Id = student_deux, FirstName = "Ivanova", LastName = "Ivanna", MiddleName = "Ivanovna", GroupId = group_une },
+                new Student { Id = student_trois, FirstName = "Petrov", LastName = "Petr", MiddleName = "Petrovich", GroupId = group_deux },
+                new Student { Id = student_quatre, FirstName = "Petrova", LastName = "Petra", MiddleName = "Petrovna", GroupId = group_une },
+                new Student { Id = student_cinq, FirstName = "Sidorov", LastName = "Sidor", MiddleName = "Sidorovich", GroupId = group_deux },
+                new Student { Id = student_six, FirstName = "Sidorova", LastName = "Sidora", MiddleName = "Sidorovna", GroupId = group_une },
+                new Student { Id = student_sept, FirstName = "Malina", LastName = "Malin", MiddleName = "Milanovich", GroupId = group_une },
+                new Student { Id = student_huit, FirstName = "Malina", LastName = "Mila", MiddleName = "Milanovna", GroupId = group_deux }
                 );
         }
     }

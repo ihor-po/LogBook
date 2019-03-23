@@ -21,6 +21,7 @@ namespace MyLogbook.Entities
         public virtual Faculty Faculty { get; set; }
 
         public virtual ICollection<ProfessorGroupLink> ProfessorGroupLinks { get; set; }
-        //public virtual List<Student> Students { get; set; }
+
+        public virtual List<Student> Students { get; set; }
     }
 }
