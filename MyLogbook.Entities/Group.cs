@@ -19,6 +19,8 @@ namespace MyLogbook.Entities
 
         [ForeignKey("FacultyId")]
         public virtual Faculty Faculty { get; set; }
+
+        public virtual ICollection<ProfessorGroupLink> ProfessorGroupLinks { get; set; }
         //public virtual List<Student> Students { get; set; }
     }
 }

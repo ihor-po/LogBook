@@ -12,6 +12,7 @@ namespace MyLogbook.AppContext
         public DbSet<Department> Departments { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Professor> Professors { get; set; }
+        public DbSet<ProfessorGroupLink> ProfessorGroupLinks { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             :base (options)
@@ -44,7 +45,6 @@ namespace MyLogbook.AppContext
                 .HasMany(f => f.Groups)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
-
             builder.Entity<Faculty>()
                 .HasMany(d => d.Departments)
                 .WithOne()
@@ -54,12 +54,10 @@ namespace MyLogbook.AppContext
                 .HasOne(g => g.Faculty)
                 .WithMany(item => item.Groups)
                 .HasForeignKey(g => g.FacultyId);
-
             builder.Entity<Department>()
                 .HasOne(g => g.Faculty)
                 .WithMany(item => item.Departments)
                 .HasForeignKey(g => g.FacultyId);
-
             builder.Entity<Department>()
                 .HasMany(p => p.Professors)
                 .WithOne()
@@ -69,6 +67,19 @@ namespace MyLogbook.AppContext
                 .HasOne(p => p.Department)
                 .WithMany(item => item.Professors)
                 .HasForeignKey(g => g.DepartmentId);
+
+            builder.Entity<ProfessorGroupLink>()
+                .HasKey(pgl => new { pgl.GroupId, pgl.ProfessorId });
+            builder.Entity<ProfessorGroupLink>()
+                .HasOne(pgl => pgl.Group)
+                .WithMany(pgl => pgl.ProfessorGroupLinks)
+                .HasForeignKey(pgl => pgl.GroupId)
+                .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<ProfessorGroupLink>()
+                .HasOne(pgl => pgl.Professor)
+                .WithMany(pgl => pgl.ProfessorGroupLinks)
+                .HasForeignKey(pgl => pgl.ProfessorId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             /*
              * First data for faculties 

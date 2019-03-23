@@ -30,5 +30,7 @@ namespace MyLogbook.Entities
 
         [ForeignKey("DepartmentId")]
         public virtual Department Department { get; set; }
+
+        public virtual ICollection<ProfessorGroupLink> ProfessorGroupLinks { get; set; }
     }
 }
