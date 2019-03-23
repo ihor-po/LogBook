@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using MyLogbook.Abstractions;
 using MyLogbook.AppContext;
 using MyLogbook.Entities;
@@ -10,6 +11,7 @@ namespace MyLogbook.Repositories
     {
         public GroupRepository(AppDbContext context) : base(context)
         {
+
         }
     }
 }

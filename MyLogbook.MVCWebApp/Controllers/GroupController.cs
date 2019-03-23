@@ -21,7 +21,6 @@ namespace MyLogbook.MVCWebApp.Controllers
         // GET: Students
         public async Task<IActionResult> Index()
         {
-
             var data = await _repository.AllItems.Include(group => group.Faculty).ToListAsync();
             return View(data);
         }

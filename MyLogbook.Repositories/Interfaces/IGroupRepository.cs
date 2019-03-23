@@ -1,5 +1,6 @@
 ﻿using MyLogbook.Abstractions;
 using MyLogbook.Entities;
+using System.Threading.Tasks;
 
 namespace MyLogbook.Repositories
 {

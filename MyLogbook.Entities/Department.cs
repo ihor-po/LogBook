@@ -7,15 +7,17 @@ using System.Text;
 
 namespace MyLogbook.Entities
 {
-    [Table("faculties")]
-    public class Faculty:DbEntity
+    [Table("departments")]
+    public class Department : DbEntity
     {
         [Column("title")]
         [StringLength(64)]
-        [Required(ErrorMessage = "Title - cannot be  empty")]
+        [Required(ErrorMessage = "Title - cannot be empty")]
         public string Title { get; set; }
+        public Guid FacultyId { get; set; }
 
-        public virtual List<Group> Groups { get; set; }
-        public virtual List<Department> Departments { get; set; }
+        [ForeignKey("FacultyId")]
+        public virtual Faculty Faculty { get; set; }
+        //public virtual List<Student> Students { get; set; }
     }
 }

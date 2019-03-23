@@ -12,7 +12,9 @@ namespace MyLogbook.Entities
     {
         [Column("title")]
         [StringLength(64)]
+        [Required(ErrorMessage = "Title - cannot be  empty")]
         public string Title { get; set; }
+        [Required(ErrorMessage = "Fuculty - must be selected")]
         public Guid FacultyId { get; set; }
 
         [ForeignKey("FacultyId")]
