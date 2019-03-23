@@ -11,6 +11,7 @@ namespace MyLogbook.AppContext
         public DbSet<Group> Groups { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Student> Students { get; set; }
+        public DbSet<Professor> Professors { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             :base (options)
@@ -19,8 +20,6 @@ namespace MyLogbook.AppContext
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            //base.OnModelCreating(builder);
-
             Guid faculty_une = Guid.NewGuid();
             Guid faculty_deux = Guid.NewGuid();
             Guid faculty_trois = Guid.NewGuid();
@@ -35,6 +34,11 @@ namespace MyLogbook.AppContext
             Guid department_deux = Guid.NewGuid();
             Guid department_trois = Guid.NewGuid();
             Guid department_quatre = Guid.NewGuid();
+
+            Guid professor_une = Guid.NewGuid();
+            Guid professor_deux = Guid.NewGuid();
+            Guid professor_trois = Guid.NewGuid();
+            Guid professor_quatre = Guid.NewGuid();
 
             builder.Entity<Faculty>()
                 .HasMany(f => f.Groups)
@@ -56,6 +60,15 @@ namespace MyLogbook.AppContext
                 .WithMany(item => item.Departments)
                 .HasForeignKey(g => g.FacultyId);
 
+            builder.Entity<Department>()
+                .HasMany(p => p.Professors)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Professor>()
+                .HasOne(p => p.Department)
+                .WithMany(item => item.Professors)
+                .HasForeignKey(g => g.DepartmentId);
 
             /*
              * First data for faculties 
@@ -83,8 +96,18 @@ namespace MyLogbook.AppContext
             builder.Entity<Department>().HasData(
                 new Department { Id = department_une, Title = "Department NET", FacultyId = faculty_une },
                 new Department { Id = department_deux, Title = "Department WEB", FacultyId = faculty_une },
-                new Department { Id = department_trois, Title = "Department Drow", FacultyId = faculty_trois },
+                new Department { Id = department_trois, Title = "Department Draw", FacultyId = faculty_trois },
                 new Department { Id = department_quatre, Title = "Department Network", FacultyId = faculty_deux }
+                );
+
+            /*
+            * First data for professors 
+            */
+            builder.Entity<Professor>().HasData(
+                new Professor { Id = professor_une, FirstName = "Jhon", LastName = "Conar", MiddleName = "Alexey", DepartmentId = department_une },
+                new Professor { Id = professor_deux, FirstName = "Josef", LastName = "Millar", MiddleName = "Nguyen", DepartmentId = department_une },
+                new Professor { Id = professor_trois, FirstName = "Elleonora", LastName = "Bo", MiddleName = "Olga", DepartmentId = department_deux },
+                new Professor { Id = professor_quatre, FirstName = "Philip", LastName = "Chan", MiddleName = "Djordje", DepartmentId = department_trois }
                 );
         }
     }

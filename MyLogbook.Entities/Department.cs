@@ -14,10 +14,12 @@ namespace MyLogbook.Entities
         [StringLength(64)]
         [Required(ErrorMessage = "Title - cannot be empty")]
         public string Title { get; set; }
+
         public Guid FacultyId { get; set; }
 
         [ForeignKey("FacultyId")]
         public virtual Faculty Faculty { get; set; }
-        //public virtual List<Student> Students { get; set; }
+
+        public virtual List<Professor> Professors { get; set; }
     }
 }
